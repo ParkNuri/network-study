@@ -1,0 +1,5 @@
+package single.console.chat;
+//클라이언트가 서버로 메시지를 보내는 작업을 수행하는 쓰레드
+public class ClientSenderThread extends Thread{
+	public 
+}

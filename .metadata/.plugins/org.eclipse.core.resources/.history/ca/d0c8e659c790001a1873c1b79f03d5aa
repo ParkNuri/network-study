@@ -1,0 +1,7 @@
+package multichat.chat.step07;
+
+public class ChatServerView {
+	public void ChatServerView() {
+		
+	}
+}

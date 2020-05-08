@@ -1,0 +1,5 @@
+package multichat.chat.step07;
+
+public class User {
+
+}
