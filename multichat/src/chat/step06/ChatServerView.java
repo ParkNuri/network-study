@@ -19,16 +19,14 @@ import javax.swing.border.EmptyBorder;
 
 
 public class ChatServerView extends JFrame {
-
 	 JPanel contentPane;
 	 JTextArea taclientlist;
 	 JButton btnchangeport;
 	 JButton btnstartServer;
 	 JButton btnstop;
-
 	 ServerSocket server;
 	 Socket socket;
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -58,6 +56,7 @@ public class ChatServerView extends JFrame {
 		
 		taclientlist = new JTextArea();
 		taclientlist.setBounds(12, 50, 472, 415);
+		taclientlist.setFont(new Font("HY견고딕", Font.BOLD, 16));
 		contentPane.add(taclientlist);
 		
 		JLabel label = new JLabel("\uC811\uC18D\uC790:");
@@ -82,57 +81,46 @@ public class ChatServerView extends JFrame {
 		btnstartServer.addActionListener(new ChatServerListener(this));
 		btnstop.addActionListener(new ChatServerListener(this));
 	}
-	
-
 	public void serverStart(int port) {
 		try {
 			server = new ServerSocket(port);
-			taclientlist.append("사용자 접속 대기중!!!\n");
-			if(server != null) {
-				//�겢�씪�씠�뼵�듃�쓽 �젒�냽�쓣 湲곕떎由щ뒗 泥섎━
+			taclientlist.append("사용자 접속 대기중\n");
+			if(server!=null) {
+				//클라이언트의 접속을 기다리는 처리
 				connection();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public void connection() {
 		Thread thread = new Thread(new Runnable() {
-			
 			@Override
 			public void run() {
-				//2.========여러 클라이언트가 접속할 수 있도록 처리================
-				while (true) {
+				//2.========여러 클라이언트가 접속할 수 있도록 처리===========
+				while(true) {
 					try {
 						socket = server.accept();
 						String ip = socket.getInetAddress().getHostAddress();
-						taclientlist.append(ip+"사용자 접속!!!\n");
+						taclientlist.append(ip+"========사용자 접속!!!\n");
 						
-						//클라이언트의 연결 부분
+						//클라이언트의 연결 부분 
 						//=> 클라이언트가 접속하면 클라이언트의 정보를 User객체로 생성해서 독립적인
-						// 실행흐름을 가질 수 있도록 쓰레드로 실행
-						
+						//   실행흐름을 가질 수 있도록 쓰레드로 실행
 						User user = new User(socket, ChatServerView.this);
 						user.start();
-						
+					
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 				}//end while
-				//=======================================================================================
+				//===========================================================
+				
 			}
 		});
 		thread.start();
 	}
 	
-	
+
 }
-
-
-
-
-
-

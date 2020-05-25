@@ -19,25 +19,22 @@ import javax.swing.border.EmptyBorder;
 
 
 public class ChatServerView extends JFrame {
-
 	 JPanel contentPane;
 	 JTextArea taclientlist;
 	 JButton btnchangeport;
 	 JButton btnstartServer;
 	 JButton btnstop;
-
 	 ServerSocket server;
 	 Socket socket;
-
-	 //1.===================서버와 통신하기 위한 입출력 스트림 변수선언======================
+	 //6.=====================클라이언트와 통신하기 위한 입출력 스트림 변수선언=================
 	 InputStream is;
 	 InputStreamReader ir;
 	 BufferedReader br;
 	 
 	 OutputStream os;
 	 PrintWriter pw;
+	 //==========================================================================
 	 
-	 //=========================================================================
 	/**
 	 * Launch the application.
 	 */
@@ -67,6 +64,7 @@ public class ChatServerView extends JFrame {
 		
 		taclientlist = new JTextArea();
 		taclientlist.setBounds(12, 50, 472, 415);
+		taclientlist.setFont(new Font("HY견고딕", Font.BOLD, 16));
 		contentPane.add(taclientlist);
 		
 		JLabel label = new JLabel("\uC811\uC18D\uC790:");
@@ -91,54 +89,47 @@ public class ChatServerView extends JFrame {
 		btnstartServer.addActionListener(new ChatServerListener(this));
 		btnstop.addActionListener(new ChatServerListener(this));
 	}
-	
-
 	public void serverStart(int port) {
 		try {
 			server = new ServerSocket(port);
-			taclientlist.append("사용자 접속 대기중!!!\n");
-			if(server != null) {
-				//�겢�씪�씠�뼵�듃�쓽 �젒�냽�쓣 湲곕떎由щ뒗 泥섎━
+			taclientlist.append("사용자 접속 대기중\n");
+			if(server!=null) {
+				//클라이언트의 접속을 기다리는 처리
 				connection();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public void connection() {
 		Thread thread = new Thread(new Runnable() {
-			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				try {
 					socket = server.accept();
 					String ip = socket.getInetAddress().getHostAddress();
-					taclientlist.append("사용자 접속!!!\n");
-					//8.======클라이언트가 접속하면 통신할 수 있도록 스트림얻기 메소드 호출=============
+					taclientlist.append(ip+"========사용자 접속!!!\n");
+					//8.======클라이언트가 접속하면 통신할 수 있도록 스트림얻기 메소드 호출=======
 					ioWork();
-					//==========================================================
-					//9.============클라이언트가 전송한 nickname출력하기=================
+					//=============================================================
+					//9.=========클라이언트가 전송한 nickname출력하기======================
 					System.out.println("클라이언트가 전송한 nickname출력:");
 					String nickname = br.readLine();
 					System.out.println("nickname:"+nickname);
-					taclientlist.append("************"+nickname+"님이 입장***************");
-					//10.=============서버가 클라이언트에게 환영메시지를 전송================
-					
+					taclientlist.append("**************"+nickname+"님이 입장***********");
+					//10.========서버가 클라이언트에게 환영메시지를 전송======================
 					pw.println("접속을 환영합니다.");
+					//===============================================================
 				} catch (IOException e) {
-
 					e.printStackTrace();
 				}
-				
 			}
 		});
 		thread.start();
 	}
-	//7. =========================서버와 통신할 수 있도록 소켓으로 부터 input/output스트림을 얻기===================
+	
+	//7. ==============클라이언트와 통신할 수 있도록 소켓으로 부터 input/output스트림을 얻기==============
 	public void ioWork() {
 		try {
 			is = socket.getInputStream();
@@ -148,11 +139,12 @@ public class ChatServerView extends JFrame {
 			os = socket.getOutputStream();
 			pw = new PrintWriter(os,true);
 			
-		} catch (IOException e) {
 			
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	//================================================================================
 }
 
 

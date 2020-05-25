@@ -14,17 +14,15 @@ import javax.swing.border.EmptyBorder;
 
 
 public class ChatServerView extends JFrame {
-
 	 JPanel contentPane;
 	 JTextArea taclientlist;
 	 JButton btnchangeport;
 	 JButton btnstartServer;
 	 JButton btnstop;
-	 //======= 1. 소켓프로그래밍을 하기 위한 객체를 준비 ========
+	 //======1. 소켓프로그래밍을 하기 위한 객체를 준비=======
 	 ServerSocket server;
 	 Socket socket;
 	 //=============================================
-	 
 	/**
 	 * Launch the application.
 	 */
@@ -78,33 +76,31 @@ public class ChatServerView extends JFrame {
 		btnstartServer.addActionListener(new ChatServerListener(this));
 		btnstop.addActionListener(new ChatServerListener(this));
 	}
-	
-	//======= 2. 클라이언트의 접속을 기다리면서 서비스를 시작할 수 있는 메서드를 정의 =======
+	//=======2. 클라이언트의 접속을 기다리면서 서비스를 시작할 수 있는 메소드를 정의================
 	public void serverStart(int port) {
 		try {
 			server = new ServerSocket(port);
 			taclientlist.append("사용자 접속 대기중\n");
-			if(server != null) {
+			if(server!=null) {
 				//클라이언트의 접속을 기다리는 처리
 				connection();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
-	//======= 3. 사용자 접속을 위한 메서드 =====================================
+	//======3. 사용자 접속을 위한 메소드 정의=============================================
 	public void connection() {
 		try {
 			socket = server.accept();
 			taclientlist.append("사용자 접속!!!\n");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
+
 }
 
 

@@ -18,7 +18,6 @@ public class ChatServerListener implements ActionListener{
 			String port = JOptionPane.showInputDialog(view, 
 					"port를 입력하세요",JOptionPane.INFORMATION_MESSAGE);
 			
-			
 		}else if(e.getSource()==view.btnstop){
 			System.out.println("서버중지");
 		}

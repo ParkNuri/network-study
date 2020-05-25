@@ -1,10 +1,20 @@
-1588897756731	Copy package
-1588899646961	Delete elements
-1588901694364	Copy compilation unit
-1588901700240	Copy compilation units
-1588901742101	Copy file
-1588906088951	Rename package 'step08'
-1588906099673	Copy compilation units
-1588906101963	Copy file
-1588912101749	Copy compilation unit
-1588912129605	Copy compilation unit
+1588817505777	Delete element
+1588818819715	Copy elements
+1588818839391	Rename resource '처음받은파일'
+1588819647017	Copy elements
+1588819674752	Rename resource '서버준비 및 문제점을 파악'
+1588825399379	Copy elements
+1588825410862	Rename resource '서버의 accept을 쓰레드로 변경'
+1588828185811	Copy elements
+1588828208863	Rename resource '클라이언트의 접속 처리하기'
+1588831859758	Copy elements
+1588831877374	Rename resource '클라이언트가 입장하면 서버와 환영인사 주고받기'
+1588897109469	Copy elements
+1588897135163	Rename resource 'multi클라이언트가 입장했을 때 처리하기'
+1588901611223	Rename package 'chat.step06.exam'
+1588901629255	Copy elements
+1588901684178	Rename resource '새로운 클라이언트의 접속을 기존 클라이언트에게 알리기'
+1588906029337	Copy elements
+1588906035801	Rename resource '기존클라이언트의 정보를 새로운 클라이언트에게 알려주기'
+1588915839399	Copy elements
+1588915846527	Rename resource '대화하기'

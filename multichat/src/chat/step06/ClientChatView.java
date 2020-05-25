@@ -1,5 +1,4 @@
 package chat.step06;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,7 +25,6 @@ public class ClientChatView extends JFrame {
 	 JTextArea taChat;
 	 JButton btnsend;
 	 JList lstconnect;
-
 	 String ip;
 	 int port;
 	 String nickname;
@@ -37,11 +36,10 @@ public class ClientChatView extends JFrame {
 	 
 	 OutputStream os;
 	 PrintWriter pw;
-	public ClientChatView(String ip,int port, String nickname) {
-		this.ip = ip;
-		this.port = port;
-		this.nickname = nickname;
-
+	public ClientChatView(String ip,int port,String nickname) {
+		this.ip= ip;
+		this.port= port;
+		this.nickname= nickname;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 758, 478);
 		contentPane = new JPanel();
@@ -50,6 +48,7 @@ public class ClientChatView extends JFrame {
 		contentPane.setLayout(null);
 		
 		taChat = new JTextArea();
+		taChat.setFont(new Font("HY견고딕", Font.BOLD, 16));
 		taChat.setBounds(12, 10, 501, 375);
 		contentPane.add(taChat);
 		
@@ -71,59 +70,52 @@ public class ClientChatView extends JFrame {
 		lstconnect = new JList();
 		lstconnect.setBounds(525, 47, 205, 108);
 		contentPane.add(lstconnect);
-		//===================여기까지 화면 만듬=====================
 		
-		
-		setVisible(true);//화면에 JFramedmf을 보이도록 설정
+		setVisible(true);//화면에 JFrame을 보이도록 설정
 		
 		//이벤트 연결하기
 		ClientChatListener listener = new ClientChatListener(this);
 		txtinput.addActionListener(listener);
 		btnsend.addActionListener(listener);
 		
-		
 		connectServer();//서버에 접속
-		
 	}
-	
 	
 	public void connectServer() {
 		try {
-			socket = new Socket(ip,port);
+			socket = new Socket(ip, port);
+			
 			if(socket!=null) {
-				ioWork();
+				ioWork();	
 			}
-			
-			
-			
 			//서버한테 nickname보내기
 			sendMsg(nickname);
 			
-			//1.===============서버가 보내오는 데이터를 읽는 부분을 쓰레드로 처리=====================
+			//1.=====서버가 보내오는 데이터를 읽는 부분을 쓰레드로 처리==================
 			Thread receiveThread = new Thread(new Runnable() {
 				@Override
 				public void run() {
 					while(true) {
-						String msg;
+						String msg="";
 						try {
 							msg = br.readLine();
 							System.out.println("서버가 전달한 메시지>>"+msg);
 						} catch (IOException e) {
-							
 							e.printStackTrace();
 						}
 					}
 				}
 			});
 			receiveThread.start();
-			
-			//=========================================================================
+			//================================================================
 			//taChat.append(msg+"\n");
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
-			
 			e.printStackTrace();
 		}
 	}
+	
 	public void ioWork() {
 		try {
 			is = socket.getInputStream();
@@ -133,20 +125,22 @@ public class ClientChatView extends JFrame {
 			os = socket.getOutputStream();
 			pw = new PrintWriter(os,true);
 			
+			
 		} catch (IOException e) {
-
 			e.printStackTrace();
 		}
 	}
 	
 	public void sendMsg(String message) {
-		System.out.println("클라이언트가 서버에게 메시지 전송ㅎ기:"+message);
+		System.out.println("클라이언트가 서버에게 메시지 전송하기:"+message);
 		pw.println(message);
 	}
 	
 	
-	
 }
+
+
+
 
 
 

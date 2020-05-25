@@ -1,12 +1,7 @@
 package chat.step07.exam;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
@@ -15,25 +10,22 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
 
 public class ChatServerView extends JFrame {
-
 	 JPanel contentPane;
 	 JTextArea taclientlist;
 	 JButton btnchangeport;
 	 JButton btnstartServer;
 	 JButton btnstop;
-
 	 ServerSocket server;
 	 Socket socket;
-	 
-	 //1. ===================클라이언트들의 정보를 저장할 변수 선언=======================
-	 Vector<User> userlist = new Vector<User>();
-	 //=======================================================================
-	 
+	 //1. ===========클라이언트들의 정보를 저장할 변수 선언===============
+	 Vector<User> userlist = new Vector<User>();	 
+	 //=========================================================
 	/**
 	 * Launch the application.
 	 */
@@ -63,7 +55,11 @@ public class ChatServerView extends JFrame {
 		
 		taclientlist = new JTextArea();
 		taclientlist.setBounds(12, 50, 472, 415);
-		contentPane.add(taclientlist);
+		taclientlist.setFont(new Font("HY견고딕", Font.BOLD, 16));
+		
+		JScrollPane scroll = new JScrollPane(taclientlist);
+		scroll.setBounds(12, 50, 472, 415);
+		contentPane.add(scroll);
 		
 		JLabel label = new JLabel("\uC811\uC18D\uC790:");
 		label.setFont(new Font("HY견고딕", Font.BOLD, 14));
@@ -87,57 +83,43 @@ public class ChatServerView extends JFrame {
 		btnstartServer.addActionListener(new ChatServerListener(this));
 		btnstop.addActionListener(new ChatServerListener(this));
 	}
-	
-
 	public void serverStart(int port) {
 		try {
 			server = new ServerSocket(port);
-			taclientlist.append("사용자 접속 대기중!!!\n");
-			if(server != null) {
-				//�겢�씪�씠�뼵�듃�쓽 �젒�냽�쓣 湲곕떎由щ뒗 泥섎━
+			taclientlist.append("사용자 접속 대기중\n");
+			if(server!=null) {
+				//클라이언트의 접속을 기다리는 처리
 				connection();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public void connection() {
 		Thread thread = new Thread(new Runnable() {
-			
 			@Override
 			public void run() {
-				while (true) {
+				while(true) {
 					try {
 						socket = server.accept();
 						String ip = socket.getInetAddress().getHostAddress();
-						taclientlist.append(ip+"=========사용자 접속!!!\n");
+						taclientlist.append(ip+"========사용자 접속!!!\n");
 						
-						//클라이언트의 연결 부분
-						//=> 클라이언트가 접속하면 클라이언트의 정보를 User객체로 생성해서 독립적인
-						// 실행흐름을 가질 수 있도록 쓰레드로 실행
-						
-						//===5. 새로운 클라이언트가 접속하면 기존 사용자의 정보를 넘길 수 있도록 수정====
+						//5. 새로운 클라이언트가 접속하면 기존 사용자의 정보를 넘길 수 있도록 수정======
 						User user = new User(socket, ChatServerView.this,userlist);
-						//=========================================================
+						//============================================================
 						user.start();
-						
+					
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 				}//end while
+				
 			}
 		});
 		thread.start();
 	}
 	
-	
+
 }
-
-
-
-
-
-

@@ -14,17 +14,13 @@ import javax.swing.border.EmptyBorder;
 
 
 public class ChatServerView extends JFrame {
-
 	 JPanel contentPane;
 	 JTextArea taclientlist;
 	 JButton btnchangeport;
 	 JButton btnstartServer;
 	 JButton btnstop;
-
 	 ServerSocket server;
 	 Socket socket;
-	 //=============================================
-	 
 	/**
 	 * Launch the application.
 	 */
@@ -54,6 +50,7 @@ public class ChatServerView extends JFrame {
 		
 		taclientlist = new JTextArea();
 		taclientlist.setBounds(12, 50, 472, 415);
+		taclientlist.setFont(new Font("HY견고딕", Font.BOLD, 16));
 		contentPane.add(taclientlist);
 		
 		JLabel label = new JLabel("\uC811\uC18D\uC790:");
@@ -78,44 +75,38 @@ public class ChatServerView extends JFrame {
 		btnstartServer.addActionListener(new ChatServerListener(this));
 		btnstop.addActionListener(new ChatServerListener(this));
 	}
-	
-
 	public void serverStart(int port) {
 		try {
 			server = new ServerSocket(port);
-			taclientlist.append("사용자 접속 대기중!!!\n");
-			if(server != null) {
-				//�겢�씪�씠�뼵�듃�쓽 �젒�냽�쓣 湲곕떎由щ뒗 泥섎━
+			taclientlist.append("사용자 접속 대기중\n");
+			if(server!=null) {
+				//클라이언트의 접속을 기다리는 처리
 				connection();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public void connection() {
 		Thread thread = new Thread(new Runnable() {
-			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				try {
 					socket = server.accept();
-					//1.====================client가 접속하면 클라이언트의 ip정보를 출력===========
+					//1.===============client가 접속하면 클라이언트의 ip정보를 출력============
 					String ip = socket.getInetAddress().getHostAddress();
-					taclientlist.append("사용자 접속!!!\n");
-					//===================================================================
+					taclientlist.append(ip+"========사용자 접속!!!\n");
+					//================================================================
 				} catch (IOException e) {
-
 					e.printStackTrace();
 				}
-				
 			}
 		});
 		thread.start();
 	}
+	
+
 }
 
 

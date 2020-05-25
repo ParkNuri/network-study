@@ -18,7 +18,7 @@ public class ChatLogin extends JFrame {
 	 JComboBox cboServer;
 	 JComboBox cboPort;
 	 JButton btnConnect;
-	 String[] ip = {"70.12.116.56","70.12.116.50","70.12.116.60","127.0.0.1"};
+	 String[] ip = {"70.12.116.50","70.12.116.50","127.0.0.1"};
 	 String[] port = {"12345"};
 	/**
 	 * Launch the application.
@@ -39,7 +39,6 @@ public class ChatLogin extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	//이클립스 플러그인 window builder툴을 설치하고 드래그 앤 드랍으로 화면 디자인 한 것
 	public ChatLogin() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 320, 529);
